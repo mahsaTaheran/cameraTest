@@ -34,7 +34,7 @@ int grabberTest::initialize(){
 	        return error;
 	    }
 	settingProfile = pcoConfiguration->getSettingID();
-	if(int result = setCentroidingSetting()){
+	if(int result = setCentroidingSettings()){
 		 return result;
 	 }
 return 0;
@@ -51,7 +51,8 @@ int grabberTest::setCentroidingSettings(){
 	 }
 
 
-	uint16_t * RoI[2]= pcoConfiguration->getRoi();
+	uint16_t RoI[2]= {100,100};
+	//RoI = pcoConfiguration->getRoi();
 	cv::Rect2i roi{{250, 100}, cv::Size{RoI[0], RoI[1]}};
 	    if (FgError_t error = pcoGrabber->setCentroidingRoi(roi)) {
 	        std::cerr << pcoGrabber->fgLastErrorDescription() << '\n';
@@ -83,7 +84,7 @@ int grabberTest::runGrab(int imageCount){
 		        return 1;
 		    }
 
-		    if (pcoConfiguration.isShowImage()){
+		    if (pcoConfiguration->isShowImage()){
 		   		showImageAndCentroid(centroiding_data);
 		   	}
 
@@ -100,7 +101,7 @@ int grabberTest::runGrab(int imageCount){
 		    //save image
 		    if (pcoConfiguration->isSaveImage()){
 		    			//saveImage
-		    	result = saveImage(centroiding_data.image, imageCount);
+		    	int result = saveImage(centroiding_data.image, imageCount);
 		    	if (result !=0){
 		    		std::cerr << "Error while saving image" << "\n";
 		    			    		return result;
@@ -112,14 +113,14 @@ int grabberTest::runGrab(int imageCount){
 		}else if (pcoConfiguration->isGrabImage()){
 			//only grab image
 			auto image_data = pcoGrabber->grabImage();
-			if (image_data.fgError()) {
+			if (image_data.fg_error) {
 				std::cerr << "Error while imaging... last  error: " << pcoGrabber->fgLastErrorDescription() << "\n";
 				return 2;
 			}
 
 			if (pcoConfiguration->isSaveImage()){
 				//saveImage
-				int result = saveImage(image_data.image, imageCount)
+				int result = saveImage(image_data.image, imageCount);
 				if (result !=0){
 					std::cerr << "Error while saving image" << "\n";
 				    	return result;
@@ -152,7 +153,7 @@ return 0;
 		//const std::string & create the file path string = path to image+"pcoTest"+settingProfile+imageCount+"tif";
 		//image is centroidingData.image;
 		std::string filepath= path_to_image+"pcoTest"+settingProfile+std::to_string(image_Count)+".tif";
-		if (!bool result = pcoGrabber->write_image_async(filepath, image)){
+		if (!pcoGrabber->write_image_async(filepath, image)){
 						return 4;
 		}
 return 0;
@@ -161,9 +162,9 @@ return 0;
 	void grabberTest::showImageAndCentroid(const CentroidingResult centroiding_data){
 
 				cv::Mat image = centroiding_data.image;
-		        cv::circle(image, {(int) centroiding_data.centroiding_coordinates.x + roi.x,
-		                           (int) centroiding_data.centroiding_coordinates.y + roi.y}, 20, {50000, 50000, 50000});
-		        cv::rectangle(image, roi, {500000, 50000, 50000});
+		        cv::circle(image, {(int) centroiding_data.centroiding_coordinates.x + pcoGrabber->getRoi().x,
+		                           (int) centroiding_data.centroiding_coordinates.y + pcoGrabber->getRoi().y}, 20, {50000, 50000, 50000});
+		        cv::rectangle(image, pcoGrabber->getRoi(), {500000, 50000, 50000});
 		        cv::putText(image, "Max grey value: " + std::to_string(centroiding_data.image_info_roi.max_grey_value),
 		                    {10, 10}, cv::FONT_HERSHEY_PLAIN, 1, {50000});
 		        cv::putText(image, "SNR: " + std::to_string(centroiding_data.image_info_roi.signal_to_noise_ratio),
@@ -173,8 +174,8 @@ return 0;
 		        cv::putText(image,
 		                    "Mean after threshold: " + std::to_string(centroiding_data.image_info_roi.mean_after_treshold),
 		                    {10, 70}, cv::FONT_HERSHEY_PLAIN, 1, {50000});
-		        cv::putText(image, "Image count: " + std::to_string(image_count), {10, 90}, cv::FONT_HERSHEY_PLAIN, 1,
-		                    {50000});
+/*		        cv::putText(image, "Image count: " + std::to_string(image_count), {10, 90}, cv::FONT_HERSHEY_PLAIN, 1,
+		                    {50000});*/
 		        cv::imshow("CentroidView", image);
 	}
 
@@ -202,7 +203,7 @@ return 0;
 		}
 		//close the centroid file
 	}
-	}
+
 /*
 	grabberTest::saveFPS(){
 

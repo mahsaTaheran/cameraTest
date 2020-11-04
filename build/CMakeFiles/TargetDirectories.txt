@@ -1,0 +1,4 @@
+/home/esbo/SWProjects/PCOTest/build/CMakeFiles/rebuild_cache.dir
+/home/esbo/SWProjects/PCOTest/build/CMakeFiles/edit_cache.dir
+/home/esbo/SWProjects/PCOTest/build/CMakeFiles/configTest.dir
+/home/esbo/SWProjects/PCOTest/build/CMakeFiles/FrameGrabber_Handler.dir

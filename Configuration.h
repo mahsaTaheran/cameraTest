@@ -77,10 +77,11 @@ bool isGrabImage();
 bool isGrabCentroid();
 bool isSaveImage();
 bool isSaveCentroid();
+bool isShowImage();
 uint32_t getImageCount();
 string getImagePath();
 string getCentroidPath();
-uint16_t *getRoi();
+//uint16_t *getRoi();
 std::string getSettingID();
 
 

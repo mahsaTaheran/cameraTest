@@ -80,7 +80,7 @@ void Configuration::addOptions(){
 		("imagePath", po::value<std::string>(&imagePath)->default_value("/images/"), "path to the directory to save images,default value is ...")
 		("centroidPath", po::value<std::string>(&centroidPath)->default_value("/centroids/"), "path to the file to save centroids,default value is ...")
 		("imageCount", po::value<uint32_t>(&imageCount)->default_value(10),"Number of Images to take, default value is...")
-		("settingID", po::value<std::string>(&settingId)->is_required(),"settingID for the configuration, required")
+		("settingID", po::value<std::string>(&settingId),"settingID for the configuration, required")
 		;
 	  visible->add(*generic).add(*config);
 }
@@ -167,12 +167,17 @@ string Configuration::getCentroidPath(){
 string Configuration::getSettingID(){
 	return settingId;
 }
+/*
 uint16_t *Configuration::getRoi(){
 	uint16_t *Roi[2]={0,0};
 	Roi[0]= Roi_Width;
 	Roi[1]= Roi_Length;
 	return Roi;
 }
+*/
 
+bool isShowImage(){
+	return true;
+}
 
 
