@@ -1,0 +1,4 @@
+FrameGrabber error: 0PCO Error: 2150834182Driver error 80332006 at device 'CameraLink driver': Open driver or driver class failed. 
+[2020-11-05 19:14:37,729] ERROR siso.fglib.lib: Failed to stop acquisition: Framegrabber is not initialized [dma-index=0, error=-2001, flags=1073741824, thread-id=140290513550528]
+[2020-11-05 19:14:37,729] ERROR siso.fglib.lib: Failed to free memory extended: Framegrabber is not initialized [error=-2001, thread-id=140290513550528]
+[2020-11-05 19:14:37,729] ERROR siso.fglib.lib: Framegrabber not initialized [error=-2001, thread-id=140290513550528]

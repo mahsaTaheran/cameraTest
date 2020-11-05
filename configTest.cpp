@@ -18,15 +18,15 @@ int main(int ac, char* av[])
 	Configuration *pcoTests = new Configuration(ac,av);
 	pcoTests->initialize();
 	pcoTests->parseConfigFile();
-
 	FrameGrabber *siso_grabber;
 	grabberTest *sisoTests = new grabberTest(siso_grabber, pcoTests);
-	if (int result = sisoTests->initialize()){
+	int result = sisoTests->initialize();
+	if (result!=0){
 		//return the error
 		cout<<"framegrabber initialization failed with error"<<result<<std::endl;
 	}
 	int count = 0;
-
+	cout<<count<<std::endl;
 	if (pcoTests->getImageCount()){
 		while (count<= pcoTests->getImageCount()){
 			int result= sisoTests->runGrab(count);

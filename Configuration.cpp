@@ -121,7 +121,7 @@ void Configuration::parseConfigFile(){
 	        	notify(configMap);
 	        	std::cout<<"reading ended with"<<exposureValueMu<<std::endl;
 	        }
-
+	       f.close();
 }
 
 float Configuration::getMinimumMean(){
@@ -176,7 +176,7 @@ uint16_t *Configuration::getRoi(){
 }
 */
 
-bool isShowImage(){
+bool Configuration::isShowImage(){
 	return true;
 }
 

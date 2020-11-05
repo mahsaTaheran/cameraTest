@@ -9,9 +9,10 @@
 
 #include "grabberTest.h"
 
-grabberTest::grabberTest(FrameGrabber *thisGrabber, Configuration* thisConfiguration):
-			pcoGrabber(thisGrabber), pcoConfiguration(thisConfiguration){
+grabberTest::grabberTest(FrameGrabber *thisGrabber, Configuration* thisConfiguration){
 
+	pcoGrabber = thisGrabber;
+	pcoConfiguration = thisConfiguration;
 }
 
 grabberTest::~grabberTest(){
@@ -22,8 +23,9 @@ grabberTest::~grabberTest(){
 
 //TODO return value
 int grabberTest::initialize(){
-
-	if (PcoFgError_t error = pcoGrabber->init()) {
+	PcoFgError_t error = pcoGrabber->init();
+	cout<<"framegrabber initialized"<<std::endl;
+	if (error) {
 	        std::cerr << "FrameGrabber error: " << error.fgError << "PCO Error: " << error.pcoError;
 	        std::cerr << pcoGrabber->pcoLastErrorDescription() << " " << pcoGrabber->fgLastErrorDescription() << '\n';
 	        return error.fgError;

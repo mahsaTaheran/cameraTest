@@ -50,6 +50,7 @@ FrameGrabber::~FrameGrabber() {
  * @return A struct containing any Serial or FrameGrabber errors. In case of no error the hasError member is set to false.
  */
 PcoFgError_t FrameGrabber::init() {
+
     if(init_serial_impl().hasError) return {handle_pco_error_internal().pcoError, FG_OK};
     if(init_fg_impl().hasError) return {PCO_NOERROR, handle_fg_error_internal().fgError};
     return {};
@@ -335,6 +336,7 @@ FgError_t FrameGrabber::init_fg_impl() {
  * @return An PcoError_t this will evaluate to false in case of no errors
  */
 PcoError_t FrameGrabber::init_serial_impl() {
+
     unsigned camera_setup[4];
     short unsigned setup_type;
     short unsigned length = 4;
