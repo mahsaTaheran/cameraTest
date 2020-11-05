@@ -52,6 +52,7 @@ FrameGrabber::~FrameGrabber() {
 PcoFgError_t FrameGrabber::init() {
 
     if(init_serial_impl().hasError) return {handle_pco_error_internal().pcoError, FG_OK};
+
     if(init_fg_impl().hasError) return {PCO_NOERROR, handle_fg_error_internal().fgError};
     return {};
 }

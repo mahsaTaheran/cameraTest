@@ -18,8 +18,8 @@ int main(int ac, char* av[])
 	Configuration *pcoTests = new Configuration(ac,av);
 	pcoTests->initialize();
 	pcoTests->parseConfigFile();
-	FrameGrabber *siso_grabber;
-	grabberTest *sisoTests = new grabberTest(siso_grabber, pcoTests);
+	FrameGrabber siso_grabber;
+	grabberTest *sisoTests = new grabberTest(&siso_grabber, pcoTests);
 	int result = sisoTests->initialize();
 	if (result!=0){
 		//return the error

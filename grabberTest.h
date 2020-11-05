@@ -17,15 +17,14 @@
 class grabberTest{
 
 public:
-	grabberTest(FrameGrabber *thisGrabber,Configuration* thisConfiguration);
+	grabberTest(FrameGrabber *thisGrabber,Configuration *thisConfiguration);
 	virtual ~grabberTest();
 	int initialize();
 	int setCentroidingSettings();
 	//should include adding
 	int runGrab(int imageCount);
 	void close();
-	FrameGrabber* pcoGrabber;
-	Configuration* pcoConfiguration;
+
 	string path_to_image;
 	string path_to_centroid;
 	string settingProfile;
@@ -36,6 +35,8 @@ private:
 	int saveCentroid(const CentroidingResult centroiding_data, int image_Count);
 	void showImage(const ImagingResult image_data);
 	void showImageAndCentroid(const CentroidingResult centroiding_data);
+	FrameGrabber *pcoGrabber =nullptr;
+	Configuration *pcoConfiguration= nullptr;
 
 };
 
