@@ -79,7 +79,7 @@ void Configuration::addOptions(){
 		("grabCentroid", po::value<bool>(&grabCentroid)->default_value(true), "if you want to grab centroid,default value is true")
 		("imagePath", po::value<std::string>(&imagePath)->default_value("/images/"), "path to the directory to save images,default value is ...")
 		("centroidPath", po::value<std::string>(&centroidPath)->default_value("/centroids/"), "path to the file to save centroids,default value is ...")
-		("imageCount", po::value<uint32_t>(&imageCount)->default_value(10),"Number of Images to take, default value is...")
+		("imageCount", po::value<uint32_t>(&imageCount),"Number of Images to take, default value is...")
 		("settingID", po::value<std::string>(&settingId),"settingID for the configuration, required")
 		;
 	  visible->add(*generic).add(*config);

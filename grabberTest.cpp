@@ -18,6 +18,7 @@ grabberTest::grabberTest(FrameGrabber *thisGrabber, Configuration *thisConfigura
 grabberTest::~grabberTest(){
 
 	//delete framegrabber
+
 	//delete configuration
 }
 
@@ -31,11 +32,11 @@ int grabberTest::initialize(){
 	        return error.fgError;
 	}
 
-
 	 if (PcoFgError_t error = pcoGrabber->startRecording()) {
 	        std::cerr << pcoGrabber->pcoLastErrorDescription() << " " << pcoGrabber->fgLastErrorDescription() << '\n';
 	        return error;
 	    }
+
 	settingProfile = pcoConfiguration->getSettingID();
 	if(int result = setCentroidingSettings()){
 		 return result;
@@ -70,7 +71,7 @@ int grabberTest::setCentroidingSettings(){
 	pcoGrabber->setMaximumMeanAfterThresholding(pcoConfiguration->getMeanAfterTresholding());
 
 
-	if(FgError_t error = pcoGrabber->setStarThresholding(0.6)){
+	if(FgError_t error = pcoGrabber->setStarThresholding(0.5)){
 	            std::cerr << pcoGrabber->fgLastErrorDescription() << error.fgError;
 	return error;
 	}
@@ -82,6 +83,16 @@ int grabberTest::runGrab(int imageCount){
 		}*/
 		if (pcoConfiguration->isGrabCentroid()){
 			auto centroiding_data = pcoGrabber->grabImageAndCentroid();
+			 std::cerr << "Centroid: " << centroiding_data.centroiding_coordinates.x << " " << centroiding_data.centroiding_coordinates.y << "\n";
+
+			 //showImageAndCentroid(centroiding_data);
+			 if (pcoConfiguration->isShowImage()){
+					   		showImageAndCentroid(centroiding_data);
+					   	}
+			 if(centroiding_data.image.empty()){
+			            std::cerr << "Empty image" << "\n";
+			            return 1;
+			        }
 		    if (centroiding_data.centroiding_enum != centroiding::no_errors) {
 		        std::cerr << "Error while centroiding... last fg error: " << pcoGrabber->fgLastErrorDescription() << "\n";
 		        return 1;
@@ -91,7 +102,7 @@ int grabberTest::runGrab(int imageCount){
 		   		showImageAndCentroid(centroiding_data);
 		   	}
 
-
+/*
 		    if (pcoConfiguration->isSaveCentroid()){
 
 		    	int result = saveCentroid(centroiding_data,imageCount);
@@ -99,9 +110,10 @@ int grabberTest::runGrab(int imageCount){
 		    		std::cerr << "Error while saving centroid" << "\n";
 		    		return result;
 		    	}
-		    }
+		    }*/
 
 		    //save image
+/*
 		    if (pcoConfiguration->isSaveImage()){
 		    			//saveImage
 		    	int result = saveImage(centroiding_data.image, imageCount);
@@ -110,6 +122,7 @@ int grabberTest::runGrab(int imageCount){
 		    			    		return result;
 		    			    }
 		    }
+*/
 
 			//show image
 
@@ -155,7 +168,8 @@ return 0;
 
 		//const std::string & create the file path string = path to image+"pcoTest"+settingProfile+imageCount+"tif";
 		//image is centroidingData.image;
-		std::string filepath= path_to_image+"pcoTest"+settingProfile+std::to_string(image_Count)+".tif";
+		std::string filepath= path_to_image+"/pcoTest"+settingProfile+std::to_string(image_Count)+".tif";
+		std::cout<<filepath<<std::endl;
 		if (!pcoGrabber->write_image_async(filepath, image)){
 						return 4;
 		}
@@ -177,8 +191,9 @@ return 0;
 		        cv::putText(image,
 		                    "Mean after threshold: " + std::to_string(centroiding_data.image_info_roi.mean_after_treshold),
 		                    {10, 70}, cv::FONT_HERSHEY_PLAIN, 1, {50000});
-/*		        cv::putText(image, "Image count: " + std::to_string(image_count), {10, 90}, cv::FONT_HERSHEY_PLAIN, 1,
-		                    {50000});*/
+		        cv::putText(image, "Image count: " + std::to_string(image_count), {10, 90}, cv::FONT_HERSHEY_PLAIN, 1,
+		                    {50000});
+		        cv::resize(image, image, {1024, 1024});
 		        cv::imshow("CentroidView", image);
 	}
 
@@ -191,6 +206,7 @@ return 0;
 
 	int grabberTest::saveCentroid(const CentroidingResult centroiding_data, int image_Count){
 		if (!centroidFile.is_open()){
+			cout<<"path"<<path_to_centroid<<std::endl;
 			centroidFile.open(path_to_centroid);
 			centroidFile<<"imageCount,centroidX,centroidY\n";
 		}

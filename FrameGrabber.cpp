@@ -159,16 +159,33 @@ PcoFgError_t FrameGrabber::stopRecording() {
 CentroidingResult FrameGrabber::grabImageAndCentroid() {
     int error = grab_image_impl();
     if(error == DIV_BY_ZERO) {
+    	  std::cout<<"error1"<<std::endl;
         return {current_frame_.clone(), centroiding_coords_, {}, centroiding::mean_below_threshold, current_image_info_};
     }
     else if(error != FG_OK){
+    	  std::cout<<"error2"<<std::endl;
         return {current_frame_.clone(), centroiding_coords_, handle_fg_error_internal(), centroiding::framegrabber_error_occured, current_image_info_};
     }
-    if(current_image_info_.mean_before_threshold > maximum_mean_) return {current_frame_, centroiding_coords_, {}, centroiding::mean_above_threshold, current_image_info_};
-    if(current_image_info_.mean_before_threshold < minimum_mean_) return {current_frame_, centroiding_coords_, {}, centroiding::mean_below_threshold, current_image_info_};
-    if(current_image_info_.mean_after_treshold > maximum_mean_after_thresholding_) return {current_frame_.clone(), centroiding_coords_, {}, centroiding::thresholded_mean_above_threshold, current_image_info_};
-    if(current_image_info_.max_grey_value > maximum_grey_value_) return  {current_frame_, centroiding_coords_, {}, centroiding::max_grey_value_above_threshold, current_image_info_};
-    if(current_image_info_.signal_to_noise_ratio < minimum_snr_) return {current_frame_, centroiding_coords_, {}, centroiding::snr_below_threshold, current_image_info_};
+    if(current_image_info_.mean_before_threshold > maximum_mean_) {
+    	  std::cout<<"error3"<<std::endl;
+    	return {current_frame_, centroiding_coords_, {}, centroiding::mean_above_threshold, current_image_info_};
+    }
+    if(current_image_info_.mean_before_threshold < minimum_mean_){
+    	 std::cout<<"error4"<<std::endl;
+    	return {current_frame_, centroiding_coords_, {}, centroiding::mean_below_threshold, current_image_info_};
+    }
+    if(current_image_info_.mean_after_treshold > maximum_mean_after_thresholding_){
+    	 std::cout<<"error5"<<std::endl;
+    	return {current_frame_.clone(), centroiding_coords_, {}, centroiding::thresholded_mean_above_threshold, current_image_info_};
+    }
+    if(current_image_info_.max_grey_value > maximum_grey_value_){
+    	 std::cout<<"error6"<<std::endl;
+    	return  {current_frame_, centroiding_coords_, {}, centroiding::max_grey_value_above_threshold, current_image_info_};
+    }
+    if(current_image_info_.signal_to_noise_ratio < minimum_snr_){
+    	 std::cout<<"error7"<<std::endl;
+    	return {current_frame_, centroiding_coords_, {}, centroiding::snr_below_threshold, current_image_info_};
+    }
     return {current_frame_, centroiding_coords_, {}, centroiding::no_errors, current_image_info_};
 }
 
