@@ -11,7 +11,6 @@
 
 grabberTest::grabberTest(FrameGrabber *thisGrabber, Configuration *thisConfiguration): pcoGrabber(thisGrabber), pcoConfiguration(thisConfiguration){
 
-	assert(pcoGrabber==thisGrabber);
 
 }
 
