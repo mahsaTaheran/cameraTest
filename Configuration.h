@@ -79,10 +79,14 @@ bool isSaveImage();
 bool isSaveCentroid();
 bool isShowImage();
 uint32_t getImageCount();
+uint32_t getExposureValue();
+uint32_t getDelayValue();
 string getImagePath();
 string getCentroidPath();
 //uint16_t *getRoi();
 std::string getSettingID();
+uint16_t getRoiWidth();
+uint16_t getRoiHeight();
 
 
 private:
@@ -97,7 +101,7 @@ private:
 
 		//properties used by grabberTest to set the centroiding algorithm
 		uint16_t Roi_Width;
-		uint16_t Roi_Length;
+		uint16_t Roi_Height;
 		float minimumSNR;
 		float minimumMean;
 		float maximumMean;

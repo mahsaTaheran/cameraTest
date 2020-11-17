@@ -67,7 +67,7 @@ void Configuration::addOptions(){
 		("exposure", po::value<uint32_t>(&exposureValueMu)->default_value(10),"camera exposure, default value is...")
 		("delay", po::value<uint32_t> (&delayValueMu)->default_value(0), "camera delay value, default value is...")
 		("Roi_Width", po::value<uint16_t>(&Roi_Width)->default_value(250), "Centroiding RoI width,default value is ...")
-		("Roi_Length", po::value<uint16_t>(&Roi_Length)->default_value(100), "Centroiding RoI length,default value is ...")
+		("Roi_Height", po::value<uint16_t>(&Roi_Height)->default_value(100), "Centroiding RoI length,default value is ...")
 		("minimum_SNR", po::value<float>(&minimumSNR)->default_value(0), "Minimum SNR required for centroiding,default value is ...")
 		("minimum_Mean", po::value<float>(&minimumMean)->default_value(0), "Minimum mean required for centroiding,default value is ...")
 		("maximum_Mean", po::value<float>(&maximumMean)->default_value(50000), "Maximum mean required for centroiding,default value is ...")
@@ -124,6 +124,14 @@ void Configuration::parseConfigFile(){
 	       f.close();
 }
 
+uint32_t Configuration::getExposureValue(){
+	return exposureValueMu;
+}
+
+uint32_t Configuration::getDelayValue(){
+	return delayValueMu;
+}
+
 float Configuration::getMinimumMean(){
 	return minimumMean;
 }
@@ -167,6 +175,8 @@ string Configuration::getCentroidPath(){
 string Configuration::getSettingID(){
 	return settingId;
 }
+
+
 /*
 uint16_t *Configuration::getRoi(){
 	uint16_t *Roi[2]={0,0};
@@ -176,6 +186,14 @@ uint16_t *Configuration::getRoi(){
 }
 */
 
+uint16_t Configuration::getRoiWidth(){
+
+	return Roi_Width;
+}
+uint16_t Configuration::getRoiHeight(){
+
+	return Roi_Height;
+}
 bool Configuration::isShowImage(){
 	return true;
 }

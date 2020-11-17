@@ -159,31 +159,31 @@ PcoFgError_t FrameGrabber::stopRecording() {
 CentroidingResult FrameGrabber::grabImageAndCentroid() {
     int error = grab_image_impl();
     if(error == DIV_BY_ZERO) {
-    	  std::cout<<"error1"<<std::endl;
+    	  std::cout<<"error1"<<'\n';
         return {current_frame_.clone(), centroiding_coords_, {}, centroiding::mean_below_threshold, current_image_info_};
     }
     else if(error != FG_OK){
-    	  std::cout<<"error2"<<std::endl;
+    	  std::cout<<"error2"<<'\n';
         return {current_frame_.clone(), centroiding_coords_, handle_fg_error_internal(), centroiding::framegrabber_error_occured, current_image_info_};
     }
     if(current_image_info_.mean_before_threshold > maximum_mean_) {
-    	  std::cout<<"error3"<<std::endl;
+    	  std::cout<<"error3"<<'\n';
     	return {current_frame_, centroiding_coords_, {}, centroiding::mean_above_threshold, current_image_info_};
     }
     if(current_image_info_.mean_before_threshold < minimum_mean_){
-    	 std::cout<<"error4"<<std::endl;
+    	 std::cout<<"error4"<<'\n';
     	return {current_frame_, centroiding_coords_, {}, centroiding::mean_below_threshold, current_image_info_};
     }
     if(current_image_info_.mean_after_treshold > maximum_mean_after_thresholding_){
-    	 std::cout<<"error5"<<std::endl;
+    	 std::cout<<"error5"<<'\n';
     	return {current_frame_.clone(), centroiding_coords_, {}, centroiding::thresholded_mean_above_threshold, current_image_info_};
     }
     if(current_image_info_.max_grey_value > maximum_grey_value_){
-    	 std::cout<<"error6"<<std::endl;
+    	 std::cout<<"error6"<<'\n';
     	return  {current_frame_, centroiding_coords_, {}, centroiding::max_grey_value_above_threshold, current_image_info_};
     }
     if(current_image_info_.signal_to_noise_ratio < minimum_snr_){
-    	 std::cout<<"error7"<<std::endl;
+    	 std::cout<<"error7"<<'\n';
     	return {current_frame_, centroiding_coords_, {}, centroiding::snr_below_threshold, current_image_info_};
     }
     return {current_frame_, centroiding_coords_, {}, centroiding::no_errors, current_image_info_};
@@ -195,7 +195,10 @@ CentroidingResult FrameGrabber::grabImageAndCentroid() {
  * in case of no error this evaluates to false
  */
 ImagingResult FrameGrabber::grabImage() {
-    if(grab_image_impl() != FG_OK) return {current_frame_, handle_fg_error_internal()};
+    if(grab_image_impl() != FG_OK) {
+
+    	return {current_frame_, handle_fg_error_internal()};
+    	}
     return {current_frame_, {}};
 }
 
@@ -407,6 +410,7 @@ FgError_t FrameGrabber::handle_fg_error_internal() {
     fg_last_error_description_ = error_string;
     error.hasError = true;
     error.fgError = last_fg_error;
+    std::cerr << "Error is"<<last_fg_error<<error_string<<"\n";
     return error;
 }
 
@@ -416,10 +420,17 @@ FgError_t FrameGrabber::handle_fg_error_internal() {
  */
 int FrameGrabber::grab_image_impl() {
     last_frame_num_ = Fg_getLastPicNumberBlockingEx(fg_, 1, DMA_INDEX, 100, frame_buffer_);
-    if(last_frame_num_ < 0) return FG_ERROR;
-    if(last_frame_num_ == 0) return FG_ERROR;
+    if(last_frame_num_ < 0) 
+    {
+    	return FG_ERROR;
+    	}
+    if(last_frame_num_ == 0)  {
+
+    	return FG_ERROR;
+    	}
     uint16_t* image_ptr;
     if((image_ptr = static_cast<uint16_t*>(Fg_getImagePtrEx(fg_, last_frame_num_, DMA_INDEX, frame_buffer_))) == nullptr){
+
         return FG_ERROR;
     }
     //Maybe we don't need to clone here if the buffer is large enough
@@ -430,6 +441,8 @@ int FrameGrabber::grab_image_impl() {
     current_image_info_.mean_after_treshold = static_cast<float>(image_information.mean_after_threshold) / 256.0f;
     current_image_info_.max_grey_value = static_cast<float>(image_information.max_gv);
     current_image_info_.signal_to_noise_ratio = max_grey_value_ / current_image_info_.mean_before_threshold;
-    if((image_information.x | image_information.y) & 0x10000) return DIV_BY_ZERO;
+    if((image_information.x | image_information.y) & 0x10000)  {
+    	return DIV_BY_ZERO;
+    }
     return FG_OK;
 }
