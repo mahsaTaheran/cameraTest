@@ -81,6 +81,11 @@ int grabberTest::setCentroidingSettings(){
 	    return error;
 	 }
 	
+	// NOTE (Joris Nonnast):
+	//! This value should not be hardcoded. It should at least be a an entry in the config file.
+	//! Note that the threshold heavily impacts the centroiding results.
+	//! In an ideal scenario 60 % (0.6) should suffice. 
+	//! Depending on the noise and other bright objects in the image, a value of 80 % (0.8) or higher could be required.
 	if(FgError_t error = pcoGrabber->setStarThresholding(0.5)){
 	      std::cerr << pcoGrabber->fgLastErrorDescription() << error.fgError;
 	      return error;
@@ -89,6 +94,15 @@ int grabberTest::setCentroidingSettings(){
 }
 
 
+// NOTE (Joris Nonnast)
+//! This is something we did unfortunately not test. The continuos grabbing without delay.
+//! As we always displayed the images on screen. Despite having a very high pollrate (cv::waitKey(1))
+//! The drawing of the image on screen does take some time. This might've been enough time to not spot the
+//! anomalies that seem to appear on very high framerates.
+//! As you told as, these anomalies seem to disappear on exposure times above 12ms. This should give a framerate of 
+//! around 83 fps. If we or you are not able to resolve the issue, or the issue lies in the framegrabber not being able to handle this datarate
+
+//! a possible workaround could be setting the delay value as such, that the sum of delay and exposure is above 12ms. 
 int grabberTest::runGrab(int imageCount){
 //todO MAKE COUNTfps OPTIONAL
 //TODO MAKE SHOWIMAGE OPTIONAL
@@ -103,6 +117,19 @@ int grabberTest::runGrab(int imageCount){
 			 return 1;
 		}
 		if (centroiding_data.centroiding_enum != centroiding::no_errors) {
+			// NOTE (Joris Nonnast):
+			//! I must admit that the naming of the enum values might be a bit confusing, good naming is hard.
+			//! The centroiding enum, does not imply framegrabber errors. Framegrabber errors are forwarded from
+			//! the silicon software sdk, failures in the centroiding algorithm are not part of it.
+			
+			//! Note, that the algorithm does not really fail inside the FPGA calculations. It will always return values.
+			//! Those values might be faulty though.
+			//! The settings like minimumSNR etc. lay an arbitrary threshold. We say, if the SNR, ... is too low/high, the values returned, are 
+			//! very likely to be garbage. The image properties, like mean or maximum greyvalue are accessible through the image_info_roi member
+			//! of the CentroidingResult struct returned by grabImageAndCentroid().
+			
+			//! The returned enum should be checked in a switch statement.
+			//! You can find the enum values in the FrameGrabberHelper.hpp 
 		     std::cerr << "Error while centroiding... last fg error: " << pcoGrabber->fgLastErrorDescription() << "\n";
 		     //this is not correct!
 		}
