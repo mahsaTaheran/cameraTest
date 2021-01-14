@@ -194,8 +194,5 @@ uint16_t Configuration::getRoiHeight(){
 
 	return Roi_Height;
 }
-bool Configuration::isShowImage(){
-	return true;
-}
 
 

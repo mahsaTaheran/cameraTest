@@ -24,6 +24,12 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
     return os;
 }
 
+/*typedef struct{
+	uint16_t ROIX0;
+	uint16_t ROIX1;
+	uint16_t ROIY0;
+	uint16_t ROIY1;
+} Image_ROI;*/
 
 class Configuration {
 public:
@@ -87,6 +93,7 @@ string getCentroidPath();
 std::string getSettingID();
 uint16_t getRoiWidth();
 uint16_t getRoiHeight();
+//Image_ROI getImageROI();
 
 
 private:

@@ -32,6 +32,11 @@ int grabberTest::initialize(){
 	        return error.fgError;
 	}
 
+	//here set the imagesize
+	if(PcoError_t error = pcoGrabber->setImageSize(pcoConfiguration->getRoiWidth(), pcoConfiguration->getRoiHeight()){
+	        	std::cerr << pcoGrabber->pcoLastErrorDescription() << "\n";
+	    	}
+//
 	 if (PcoFgError_t error = pcoGrabber->startRecording()) {
 	        std::cerr << pcoGrabber->pcoLastErrorDescription() << " " << pcoGrabber->fgLastErrorDescription() << '\n';
 	        return error;
@@ -54,10 +59,14 @@ return 0;
 int grabberTest::setCentroidingSettings(){
 	 if (pcoConfiguration->isSaveCentroid()){
 		 path_to_centroid =pcoConfiguration->getCentroidPath()+settingProfile+".csv";
+		 //path_to_FPS=pcoConfiguration->getCentroidPath()+settingProfile+"FPS"+".csv";
 		 //path_to_centroid=pcoConfiguration.getCentroidPath()+settingProfile+".csv";
 				cout<<"path"<<path_to_centroid<<std::endl;
 				centroidFile.open(path_to_centroid);
 				centroidFile<<"imageCount,centroidX,centroidY,maxGreyValue,SNR,meanAfterThreshold\n";
+
+				//FPSFile.open(path_to_FPS);
+				//FPSFile<<"imageCount,FPS\n";
 			}
 
 
@@ -109,9 +118,10 @@ int grabberTest::runGrab(int imageCount){
 
 	auto start = std::chrono::high_resolution_clock::now();
 	if (pcoConfiguration->isGrabCentroid()){
-
+		//auto start = std::chrono::high_resolution_clock::now();
 		auto centroiding_data = pcoGrabber->grabImageAndCentroid();
 		std::cout << "Centroid: " << centroiding_data.centroiding_coordinates.x << " " << centroiding_data.centroiding_coordinates.y << "\n";
+
 		if(centroiding_data.image.empty()){
 			 std::cerr << "Empty image" << "\n";
 			 return 1;
@@ -133,6 +143,12 @@ int grabberTest::runGrab(int imageCount){
 		     std::cerr << "Error while centroiding... last fg error: " << pcoGrabber->fgLastErrorDescription() << "\n";
 		     //this is not correct!
 		}
+		/*auto end = std::chrono::high_resolution_clock::now();
+		time += std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+		std::cout<< (imageCount / (time.count() * 1e-9))<<"\n";
+		lastFPS=imageCount / (time.count() * 1e-9);
+
+		*/
 
 		//also we should check for possible errors in pco and fg later
 		showImageAndCentroid(centroiding_data);
@@ -141,6 +157,7 @@ int grabberTest::runGrab(int imageCount){
 		std::cout<< (imageCount / (time.count() * 1e-9))<<"\n";
 		if (pcoConfiguration->isSaveCentroid()){
 		    saveCentroid(centroiding_data,imageCount);
+		    //saveFPS(currentFPS, imageCount);
 		}
 
 		if (pcoConfiguration->isSaveImage()){
@@ -229,12 +246,13 @@ void grabberTest::saveCentroid(const CentroidingResult centroiding_data, int ima
 	    }
 		if (pcoConfiguration->isSaveCentroid()){
 			centroidFile.close();
+			//FPSFile.close();
 		}
 	}
 
 /*
-	grabberTest::saveFPS(){
-
+	void grabberTest::saveFPS(double currentFPS, int image_Count){
+FPSFile<<image_Count<<","<<currentFPS<<"\n";
 	}
 
 	grabberTest::countFPS(){

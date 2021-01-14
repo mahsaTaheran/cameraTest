@@ -446,3 +446,19 @@ int FrameGrabber::grab_image_impl() {
     }
     return FG_OK;
 }
+
+PcoError_t FrameGrabber::setImageSize(uint16_t ROI_width, uint16_t ROI_height) {
+   image_width_ = ROI_width;
+   image_height_= ROI_height;
+   uint16_t ROI_X0 = (2048-ROI_width)/2+1;
+   uint16_t ROI_X1= ROI_X0+ ROI_width;
+   uint16_t ROI_Y0 = (2048-ROI_height)/2+1;
+   uint16_t ROI_Y1 = ROI_Y0+ROI_height;
+      //recording is stopped, camera is armed after settin the ROI
+      if((last_pco_error_ = pco_serial_com_.PCO_SetROI(ROI_X0, ROI_Y0, ROI_X1, ROI_Y1)) != PCO_NOERROR) return handle_pco_error_internal();
+        if((last_pco_error_ = pco_serial_com_.PCO_ArmCamera() != PCO_NOERROR)){
+            return handle_pco_error_internal();
+        }
+   //start recording should be called after
+    return {};
+}

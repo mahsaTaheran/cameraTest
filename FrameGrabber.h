@@ -64,6 +64,7 @@ public:
     FgError_t setCentroidingRoi(const cv::Rect2i &region_of_interest);
     cv::Rect2i getRoi();
     PcoError_t setDelayAndExposure(uint32_t delay_in_mu, uint32_t exposure_in_mu);
+    PcoError_t setImageSize(uint16_t ROI_width, uint16_t ROI_height);
     FgError_t setStarThresholding(float percentage_of_maximum);
     PcoFgError_t startRecording();
     PcoFgError_t stopRecording();
