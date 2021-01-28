@@ -29,9 +29,9 @@ enum class centroiding{
  */
 struct ImageInformation{
     uint16_t max_grey_value; ///< The maximum grey value inside the region of interest
-    float signal_to_noise_ratio; ///< The SNR (max_greyvalue/mean_before_threshold)
-    float mean_before_threshold; ///< The mean of the region of interest before the thresholding operation
-    float mean_after_treshold; ///< The mean of the region of interest after the thresholding operation
+    double signal_to_noise_ratio; ///< The SNR (max_greyvalue/mean_before_threshold)
+    double mean_before_threshold; ///< The mean of the region of interest before the thresholding operation
+    double mean_after_treshold; ///< The mean of the region of interest after the thresholding operation
 };
 
 /**
