@@ -114,7 +114,7 @@ PcoError_t FrameGrabber::setDelayAndExposure(uint32_t delay_in_mu, uint32_t expo
  * @param percentage_of_maximum
  * @return The corresponding FrameGrabber errors in case of no errors this evaluates to false
  */
-FgError_t FrameGrabber::setStarThresholding(float percentage_of_maximum) {
+FgError_t FrameGrabber::setStarThresholding(double percentage_of_maximum) {
     int percentage_shifted = percentage_of_maximum*255;
     if(Fg_setParameterWithType(fg_, LOWER_THRESHOLD_ID, percentage_shifted, DMA_INDEX) != FG_OK) return handle_fg_error_internal();
     return {};
@@ -207,7 +207,7 @@ ImagingResult FrameGrabber::grabImage() {
  * @details If the snr is too low, the centroiding might fail.
  * @param minimum_snr The minimal acceptable signal to noise ratio inside the region of interest
  */
-void FrameGrabber::setMinimumSNR(float minimum_snr) {
+void FrameGrabber::setMinimumSNR(double minimum_snr) {
     minimum_snr_ = minimum_snr;
 }
 
@@ -217,7 +217,7 @@ void FrameGrabber::setMinimumSNR(float minimum_snr) {
  * underexposed or there is no guide star in the frame
  * @param minimum_mean The minimal acceptable mean before thresholding inside the region of interest
  */
-void FrameGrabber::setMinimumMean(float minimum_mean) {
+void FrameGrabber::setMinimumMean(double minimum_mean) {
     minimum_mean_ = minimum_mean;
 }
 
@@ -227,7 +227,7 @@ void FrameGrabber::setMinimumMean(float minimum_mean) {
  * overexposed or there is more than one guide star in the frame
  * @param maximum_mean The maximal acceptable mean before thresholding inside the region of interest
  */
-void FrameGrabber::setMaximumMean(float maximum_mean) {
+void FrameGrabber::setMaximumMean(double maximum_mean) {
     maximum_mean_ = maximum_mean;
 }
 
@@ -248,7 +248,7 @@ void FrameGrabber::setMaximumGreyValue(uint16_t max_grey_value) {
  * centroiding will fail.
  * @param mean_after_thresholding Maximum acceptable image mean after thresholding inside the region of interest
  */
-void FrameGrabber::setMaximumMeanAfterThresholding(float mean_after_thresholding) {
+void FrameGrabber::setMaximumMeanAfterThresholding(double mean_after_thresholding) {
     maximum_mean_after_thresholding_ = mean_after_thresholding;
 }
 
@@ -436,10 +436,10 @@ int FrameGrabber::grab_image_impl() {
     //Maybe we don't need to clone here if the buffer is large enough
     current_frame_ = cv::Mat(image_height_, image_width_, CV_16UC1, image_ptr).clone();
     internal_parse image_information = *reinterpret_cast<internal_parse*>(image_ptr + (image_width_*image_height_));
-    centroiding_coords_ = {image_information.x/256.0f , image_information.y/256.0f};
-    current_image_info_.mean_before_threshold = static_cast<float>(image_information.mean) / 256.0f;
-    current_image_info_.mean_after_treshold = static_cast<float>(image_information.mean_after_threshold) / 256.0f;
-    current_image_info_.max_grey_value = static_cast<float>(image_information.max_gv);
+    centroiding_coords_ = {image_information.x/256.0f , image_information.y/256.0};
+    current_image_info_.mean_before_threshold = static_cast<double>(image_information.mean) / 256.0;
+    current_image_info_.mean_after_treshold = static_cast<double>(image_information.mean_after_threshold) / 256.0;
+    current_image_info_.max_grey_value = static_cast<double>(image_information.max_gv);
     current_image_info_.signal_to_noise_ratio = max_grey_value_ / current_image_info_.mean_before_threshold;
     if((image_information.x | image_information.y) & 0x10000)  {
     	return DIV_BY_ZERO;
