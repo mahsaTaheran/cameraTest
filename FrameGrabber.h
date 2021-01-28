@@ -47,10 +47,10 @@ class FrameGrabber final {
     ImageInformation current_image_info_;
     cv::Point2f centroiding_coords_;
     cv::Rect2i centroiding_roi_{cv::Point{0, 0}, cv::Size(100,100)};
-    float maximum_mean_ = 800; //more than
-    float minimum_mean_ = 100; //less than
-    float minimum_snr_ = 5; //less than
-    float maximum_mean_after_thresholding_ = 1; //more than //TODO check for good default
+    double maximum_mean_ = 800; //more than
+    double minimum_mean_ = 100; //less than
+    double minimum_snr_ = 5; //less than
+    double maximum_mean_after_thresholding_ = 1; //more than //TODO check for good default
     uint16_t max_grey_value_ = 0;
     uint16_t maximum_grey_value_ = 50000; //more than
     //image save
@@ -65,16 +65,16 @@ public:
     cv::Rect2i getRoi();
     PcoError_t setDelayAndExposure(uint32_t delay_in_mu, uint32_t exposure_in_mu);
     PcoError_t setImageSize(uint16_t ROI_width, uint16_t ROI_height);
-    FgError_t setStarThresholding(float percentage_of_maximum);
+    FgError_t setStarThresholding(double percentage_of_maximum);
     PcoFgError_t startRecording();
     PcoFgError_t stopRecording();
     CentroidingResult grabImageAndCentroid();
     ImagingResult grabImage();
 
-    void setMinimumSNR(float minimum_snr);
-    void setMinimumMean(float minimum_mean);
-    void setMaximumMean(float maximum_mean);
-    void setMaximumMeanAfterThresholding(float mean_after_thresholding);
+    void setMinimumSNR(double minimum_snr);
+    void setMinimumMean(double minimum_mean);
+    void setMaximumMean(double maximum_mean);
+    void setMaximumMeanAfterThresholding(double mean_after_thresholding);
     void setMaximumGreyValue(uint16_t max_grey_value);
     //error interface
     std::string fgLastErrorDescription() const;
