@@ -207,8 +207,13 @@ void grabberTest::saveImage(const cv::Mat &image, int image_Count){
 }
 
 void grabberTest::showImageAndCentroid(const CentroidingResult centroiding_data){
-
+	//! NOTE (Joris Nonnast):
+	// Try this to only display the region of interest that is used for centroiding:
+	// auto roi = framegrabber.getRoi();
+	// cameraImage = centroiding_data.image(roi)
 				cameraImage = centroiding_data.image;
+
+				// comment this to increase performance
 		        cv::circle(cameraImage, {(int) centroiding_data.centroiding_coordinates.x + pcoGrabber->getRoi().x,
 		                           (int) centroiding_data.centroiding_coordinates.y + pcoGrabber->getRoi().y}, 20, {50000, 50000, 50000});
 		        cv::rectangle(cameraImage, pcoGrabber->getRoi(), {500000, 50000, 50000});
@@ -224,6 +229,7 @@ void grabberTest::showImageAndCentroid(const CentroidingResult centroiding_data)
 		        /*cv::putText(image, "Image count: " + std::to_string(image_count), {10, 90}, cv::FONT_HERSHEY_PLAIN, 1,
 		                    {50000});*/
 		        cv::resize(cameraImage, cameraImage, {1024, 1024});
+				// until here
 		        cv::imshow("CentroidView", cameraImage);
 
 	}
