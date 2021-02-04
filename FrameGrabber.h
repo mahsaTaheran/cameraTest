@@ -31,7 +31,7 @@ class FrameGrabber final {
     dma_mem* frame_buffer_ = nullptr;
     static constexpr unsigned image_width_ = 2048;
     static constexpr unsigned image_height_ = 2048;
-    static constexpr unsigned buffer_cnt_ = 20;
+    static constexpr unsigned buffer_cnt_ = 100;
     static constexpr unsigned image_size_ = image_width_ * (image_height_ + 1); // +1 for centroiding data
     int ROI_X_ID{0};
     int ROI_Y_ID{0};
