@@ -20,27 +20,14 @@ namespace po = boost::program_options;
 template<class T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 {
-    copy(v.begin(), v.end(), std::ostream_iterator<T>(os, " "));
-    return os;
+	copy(v.begin(), v.end(), std::ostream_iterator<T>(os, " "));
+	return os;
 }
 
-/*typedef struct{
-	uint16_t ROIX0;
-	uint16_t ROIX1;
-	uint16_t ROIY0;
-	uint16_t ROIY1;
-} Image_ROI;*/
 
 class Configuration {
 public:
 
-
-	/**
-	 * @brief
-	 * @details
-	 * @param
-	 * @return
-	 */
 	Configuration(int ac, char* av[]);
 	virtual ~Configuration();
 	void copyInputValues(int ac, char *av[]);
@@ -64,76 +51,80 @@ public:
 	void addOptions();
 	void parseCommandLine(int argc, char* argv[]);
 
-	 /**
-	  * @brief
-	  * @details
-	  * @param
-	  * @return
-	  */
+	/**
+	 * @brief parses the config.ini file
+	 * @details
+	 * @param
+	 * @return
+	 */
 	void parseConfigFile();
 
-//getters used by grabberTest class to get the settings
 
-float getMinimumMean();
-float getMaximumMean();
-float getMinimumSNR();
-uint16_t getMaximumGreyValue();
-float getMeanAfterTresholding();
-bool isGrabImage();
-bool isGrabCentroid();
-bool isSaveImage();
-bool isSaveCentroid();
-bool isShowImage();
-uint32_t getImageCount();
-uint32_t getExposureValue();
-uint32_t getDelayValue();
-string getImagePath();
-string getCentroidPath();
-//uint16_t *getRoi();
-std::string getSettingID();
-uint16_t getRoiWidth();
-uint16_t getRoiHeight();
-//Image_ROI getImageROI();
+	/**
+	 * @brief getters used by grabberTest class to get the settings
+	 * @details
+	 * @param
+	 * @return
+	 */
+	float getMinimumMean();
+	float getMaximumMean();
+	float getMinimumSNR();
+	uint16_t getMaximumGreyValue();
+	float getMeanAfterTresholding();
+	bool isGrabImage();
+	bool isGrabCentroid();
+	bool isSaveImage();
+	bool isSaveCentroid();
+	bool isShowImage();
+	uint32_t getImageCount();
+	uint32_t getExposureValue();
+	uint32_t getDelayValue();
+	string getImagePath();
+	string getCentroidPath();
+	std::string getSettingID();
+	uint16_t getRoiWidth();
+	uint16_t getRoiHeight();
+
 
 
 private:
 
-//input from commandline
-    	int inputCount;
-    	char **inputString;
+	//input from commandline
+	int inputCount;
+	char **inputString;
 
-		//properties used by grabberTest to set the imaging properties
-		uint32_t exposureValueMu;
-		uint32_t delayValueMu;//should be changed to cv__Rect2i later
+	//properties used by grabberTest to set the imaging properties
+	uint32_t exposureValueMu;
+	uint32_t delayValueMu;//should be changed to cv__Rect2i later
 
-		//properties used by grabberTest to set the centroiding algorithm
-		uint16_t Roi_Width;
-		uint16_t Roi_Height;
-		float minimumSNR;
-		float minimumMean;
-		float maximumMean;
-		float meanAfterThresholding;
-		uint16_t maximumGreyValue;
+	//properties used by grabberTest to set the centroiding algorithm
+	uint16_t Roi_Width;
+	uint16_t Roi_Height;
+	float minimumSNR;
+	float minimumMean;
+	float maximumMean;
+	float meanAfterThresholding;
+	uint16_t maximumGreyValue;
 
-		//properties used by the grabberTest class to perform the operations
-		bool grabImage;
-		bool grabCentroid;
-		bool saveImage;
-		bool saveCentroid;
-		uint32_t imageCount;
+	//properties used by the grabberTest class to perform the operations
+	bool grabImage;
+	bool grabCentroid;
+	bool saveImage;
+	bool saveCentroid;
+	uint32_t imageCount;
 
-		//paths to reading config file and saving data
-		std::string imagePath;
-		std::string centroidPath;
-		std::string config_file;
-		std::string settingId;
+	//paths to reading config file and saving data
+	std::string imagePath;
+	std::string centroidPath;
+	std::string config_file;
+	std::string settingId;
 
-		po::options_description *config;
-		po::options_description *generic;
-		po::options_description *visible;
+	po::options_description *config;
+	po::options_description *generic;
+	po::options_description *visible;
 
-        po::variables_map genericMap;
-        po::variables_map configMap;
+	po::variables_map genericMap;
+	po::variables_map configMap;
 
 
 };

@@ -14,7 +14,11 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-
+/*****
+ * @brief The main purpose of this class is to run the grabbing procedure
+ * based on the configuration set by user.
+ *
+ */
 class grabberTest{
 
 public:
@@ -30,19 +34,19 @@ public:
 	string path_to_centroid;
 	string settingProfile;
 	ofstream centroidFile;
-	//ofstream FPSFile;
+
 private:
 
 	void saveImage(const cv::Mat &image, int image_Count);
 	void saveCentroid(const CentroidingResult centroiding_data, int image_Count);
-	//void saveFPS(double currentFPS, int image_Count);
+
 	void showImage(const ImagingResult image_data);
 	void showImageAndCentroid(const CentroidingResult centroiding_data);
 	FrameGrabber *pcoGrabber =nullptr;
 	Configuration *pcoConfiguration= nullptr;
 	cv::Mat cameraImage;
 	std::chrono::nanoseconds time{0};
-	//double currentFPS;
+
 
 };
 

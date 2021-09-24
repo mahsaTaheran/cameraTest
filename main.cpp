@@ -24,32 +24,33 @@ int main(int ac, char* av[])
 	FrameGrabber siso_grabber;
 	grabberTest sisoTests(&siso_grabber, &pcoConfig);
 	int result = sisoTests.initialize();
-	/*if (result==0){
-			//return the error
+	if (result==0){
 		cout<<"framegrabber initialization failed with error"<<result<<std::endl;
-		return 5;
-	}*/
+		return result;
+	}
+
 	int count = 0;
+
 	if (pcoConfig.getImageCount()>0){
 		while ((count<= pcoConfig.getImageCount())&& (cv::waitKey(1) != 'q')){
 			int result= sisoTests.runGrab(count);
-				if (result !=0){
-					cout<<"grabbing failed at"<<count<<"with error"<<result<<std::endl;
-				}
-				count++;
+			if (result !=0){
+				cout<<"grabbing failed at"<<count<<"with error"<<result<<std::endl;
 			}
-			sisoTests.close();
-		/*}else {
-			while (cv::waitKey(1) != 'q'){
-				int result= sisoTests.runGrab(count);
-				if (result !=0){
-					cout<<"grabbing failed at"<<count<<"with error"<<result<<std::endl;
-				}
-				count++;
-			}
-
-			sisoTests.close();*/
+			count++;
 		}
+		sisoTests.close();
+	}else {
+		while (cv::waitKey(1) != 'q'){
+			int result= sisoTests.runGrab(count);
+			if (result !=0){
+				cout<<"grabbing failed at"<<count<<"with error"<<result<<std::endl;
+			}
+			count++;
+		}
+
+		sisoTests.close();
+	}
 	return 0;
 }
 	
