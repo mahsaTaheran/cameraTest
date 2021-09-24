@@ -1,2 +1,0 @@
-/usr/bin/ar qc libFrameGrabber_Handler.a  CMakeFiles/FrameGrabber_Handler.dir/FrameGrabber.cpp.o
-/usr/bin/ranlib libFrameGrabber_Handler.a
